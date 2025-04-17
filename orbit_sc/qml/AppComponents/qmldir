@@ -1,0 +1,3 @@
+module AppComponents
+AppCard 1.0 AppCard.qml
+AppStore 1.0 AppStore.qml
