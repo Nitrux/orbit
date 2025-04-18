@@ -112,7 +112,7 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
 
             property int cardsPerRow: Math.floor(width / 240) // ~220 card + spacing
-            property int totalCards: 6
+            property int totalCards: 9
             property int rowCount: Math.ceil(totalCards / cardsPerRow)
 
             Repeater {
@@ -148,14 +148,14 @@ Rectangle {
                                     width: 64
                                     height: 64
                                     radius: 8
-                                    color: "#ffe082"
+                                    color: "#f5f5f5"
                                     anchors.horizontalCenter: parent.horizontalCenter
 
-                                    ToolButton {
+                                    Image {
                                         anchors.centerIn: parent
-                                        icon.name: "system-file-manager"
-                                        background: null 
-                                        onClicked: {}
+                                        source: "file:/usr/share/icons/breeze/apps/48/system-file-manager.svg"
+                                        width: 64
+                                        height: 64
                                     }
                                 }
 
