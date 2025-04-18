@@ -34,26 +34,48 @@ ApplicationWindow {
 
     property bool searchVisible: false
 
-    ColumnLayout {
+    Item {
         anchors.fill: parent
-        spacing: 0
 
-        TopNavigationBar {
-            Layout.fillWidth: true
-            onToggleSearch: searchVisible = !searchVisible
+        // Main vertical layout
+        Column {
+            id: mainColumn
+            anchors.fill: parent
+            spacing: 0
+
+            TopNavigationBar {
+                id: topNav
+                width: parent.width
+                onToggleSearch: searchVisible = !searchVisible
+            }
+
+            CategoryBar {
+                id: categoryBar
+                width: parent.width
+            }
+
+            // Main scrollable content
+            ScrollView {
+                id: scrollArea
+                width: parent.width
+                height: parent.height - topNav.height - categoryBar.height
+
+                MainView {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+            }
         }
 
-        CategoryBar {
-            Layout.fillWidth: true
-        }
-
+        // Floating Search Overlay
         Rectangle {
-            id: searchBarContainer
-            Layout.fillWidth: true
+            id: searchOverlay
+            width: parent.width
             height: searchVisible ? 50 : 0
+            y: topNav.height + categoryBar.height
             color: "#ffffff"
             border.color: "#dcdcdc"
             clip: true
+            z: 100
 
             Behavior on height {
                 NumberAnimation {
@@ -76,15 +98,6 @@ ApplicationWindow {
                     icon.name: "edit-find"
                     onClicked: AppHub.search_app(searchField.text)
                 }
-            }
-        }
-
-        ScrollView {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-
-            MainView {
-                anchors.horizontalCenter: parent.horizontalCenter
             }
         }
     }
