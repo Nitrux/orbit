@@ -72,38 +72,44 @@ class AppListModel(QAbstractListModel):
 
 
 class AppHubBackend(QObject):
-    def __init__(self, model):
+    def __init__(self, search_model, installed_model):
         super().__init__()
-        self.model = model
+        self.search_model = search_model
+        self.installed_model = installed_model
 
     @Slot(str)
     def search_app(self, app_name):
         result_dicts = get_search_results([app_name])
-        self.model.update(result_dicts)
+        self.search_model.update(result_dicts)
 
     @Slot(str)
     def install_app(self, app_name):
         print(f"Installing {app_name}...")
+        for app in self.search_model._apps:
+            if app["name"] == app_name:
+                installed = self.installed_model._apps.copy()
+                installed.append(app)
+                self.installed_model.update(installed)
+                break
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     engine = QQmlApplicationEngine()
 
-    app_model = AppListModel()
-    backend = AppHubBackend(app_model)
+    search_model = AppListModel()
+    installed_model = AppListModel()
+    backend = AppHubBackend(search_model, installed_model)
 
     engine.rootContext().setContextProperty("AppHub", backend)
-    engine.rootContext().setContextProperty("appListModel", app_model)
+    engine.rootContext().setContextProperty("appListModel", search_model)
+    engine.rootContext().setContextProperty("installedAppListModel", installed_model)
 
-    qml_file = Path(__file__).resolve().parent / "main.qml"
+    qml_file = Path(__file__).resolve().parent / "qml" / "AppComponents" / "AppWindow.qml"
     qml_import_path = Path(__file__).resolve().parent / "qml"
     engine.addImportPath(str(qml_import_path))
 
-    # -- Add QML import path BEFORE loading the file.
-
-    engine.addImportPath(str(qml_import_path))
     print(f"📁 Added QML import path: {qml_import_path}")
-
     print(f"📄 Loading QML: {qml_file}")
     engine.load(QUrl.fromLocalFile(str(qml_file)))
 

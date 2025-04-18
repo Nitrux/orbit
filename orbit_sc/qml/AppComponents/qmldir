@@ -1,3 +1,7 @@
 module AppComponents
+
 AppCard 1.0 AppCard.qml
-AppStore 1.0 AppStore.qml
+AppWindow 1.0 AppWindow.qml
+CategoryBar 1.0 CategoryBar.qml
+MainView 1.0 MainView.qml
+TopNavigationBar 1.0 TopNavigationBar.qml

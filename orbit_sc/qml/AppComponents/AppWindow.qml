@@ -23,45 +23,69 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-
 import AppComponents 1.0
 
 ApplicationWindow {
+    id: appWindow
     visible: true
-    width: 800
-    height: 600
-    title: "NX AppHub GUI"
+    width: 1024
+    height: 768
+    title: "Orbit"
 
-    Column {
+    property bool searchVisible: false
+
+    ColumnLayout {
         anchors.fill: parent
-        spacing: 10
-        padding: 20
+        spacing: 0
 
-        Row {
-            spacing: 10
+        TopNavigationBar {
+            Layout.fillWidth: true
+            onToggleSearch: searchVisible = !searchVisible
+        }
 
-            TextField {
-                id: searchField
-                placeholderText: "Search for an app"
-                width: 300
+        CategoryBar {
+            Layout.fillWidth: true
+        }
+
+        Rectangle {
+            id: searchBarContainer
+            Layout.fillWidth: true
+            height: searchVisible ? 50 : 0
+            color: "#ffffff"
+            border.color: "#dcdcdc"
+            clip: true
+
+            Behavior on height {
+                NumberAnimation {
+                    duration: 200
+                    easing.type: Easing.InOutQuad
+                }
             }
 
-            Button {
-                text: "Search"
-                onClicked: AppHub.search_app(searchField.text)
+            RowLayout {
+                anchors.fill: parent
+                anchors.margins: 10
+
+                TextField {
+                    id: searchField
+                    Layout.fillWidth: true
+                    placeholderText: "Search"
+                }
+
+                ToolButton {
+                    icon.name: "edit-find"
+                    onClicked: AppHub.search_app(searchField.text)
+                }
             }
         }
 
-        ListView {
-            id: listView
-            model: appListModel
-            delegate: AppCard {}
-            clip: true
-            spacing: 8
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.topMargin: 10
-            anchors.bottom: parent.bottom
+        ScrollView {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            MainView {
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
         }
     }
 }
