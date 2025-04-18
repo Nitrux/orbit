@@ -24,15 +24,22 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
-Item {
+Rectangle {
     width: parent.width
-    height: implicitHeight
+    anchors.fill: parent
+    color: "#ffffff" // Visible background
 
     Column {
         id: mainColumn
         width: parent.width
-        anchors.horizontalCenter: parent.horizontalCenter
         spacing: 20
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        Rectangle {
+            height: 24
+            width: parent.width
+            color: "transparent"
+        }
 
         // Carousel Banner
         SwipeView {
@@ -111,9 +118,9 @@ Item {
 
                 Repeater {
                     model: ListModel {
-                        ListElement { name: "Lorem ipsum"; description: "Lorem ipsum dolor sit amet"; icon: "folder" }
-                        ListElement { name: "Lorem ipsum"; description: "Lorem ipsum dolor sit amet"; icon: "text-editor" }
-                        ListElement { name: "Lorem ipsum"; description: "Lorem ipsum dolor sit amet"; icon: "applications-graphics" }
+                        ListElement { name: "Lorem ipsum"; description: "Lorem ipsum dolor sit amet"; icon: "system-file-manager" }
+                        ListElement { name: "Lorem ipsum"; description: "Lorem ipsum dolor sit amet"; icon: "preferences-system" }
+                        ListElement { name: "Lorem ipsum"; description: "Lorem ipsum dolor sit amet"; icon: "utilities-text-editor" }
                     }
 
                     delegate: Rectangle {

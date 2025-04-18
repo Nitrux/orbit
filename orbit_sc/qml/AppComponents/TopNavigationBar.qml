@@ -26,7 +26,7 @@ import QtQuick.Layouts 1.15
 
 Rectangle {
     width: parent.width
-    height: 60
+    height: 41
     color: "#f0f0f0"
     border.color: "#dcdcdc"
 
@@ -34,8 +34,8 @@ Rectangle {
 
     RowLayout {
         anchors.fill: parent
-        anchors.margins: 10
-        spacing: 10
+        anchors.margins: 4
+        spacing: 4
 
         // Navigation buttons
         ToolButton {
@@ -54,18 +54,24 @@ Rectangle {
 
         // Centered icons (no need to set width)
         ToolButton {
-            icon.name: "view-grid"
+            icon.name: "plasmadiscover"
             ToolTip.text: "Available applications"
         }
 
         ToolButton {
-            icon.name: "document-save"
+            icon.name: "folder-downloads"
             ToolTip.text: "Installed applications"
         }
 
         // Spacer after center buttons
         Item {
             Layout.fillWidth: true
+        }
+
+        // Search toggle button
+        ToolButton {
+            icon.name: "view-list-icons"
+            ToolTip.text: "Change view"
         }
 
         // Search toggle button

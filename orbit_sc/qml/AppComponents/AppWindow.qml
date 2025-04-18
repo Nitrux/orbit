@@ -86,7 +86,7 @@ ApplicationWindow {
 
             RowLayout {
                 anchors.fill: parent
-                anchors.margins: 10
+                anchors.margins: 6
 
                 TextField {
                     id: searchField

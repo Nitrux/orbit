@@ -26,26 +26,35 @@ import QtQuick.Layouts 1.15
 
 Rectangle {
     width: parent.width
-    height: 60
+    height: 41
     color: "#eeeeee"
     border.color: "#cccccc"
 
     Row {
         anchors.centerIn: parent
-        spacing: 20
+        spacing: 16
 
         Repeater {
-            model: 8
-            delegate: Rectangle {
-                width: 32
-                height: 32
-                radius: 6
-                color: "#444"
+            model: ListModel {
+                ListElement { iconName: "applications-development"; category: "Development" }
+                ListElement { iconName: "applications-education-mathematics"; category: "Education" }
+                ListElement { iconName: "applications-education"; category: "Education" }
+                ListElement { iconName: "applications-games"; category: "Games" }
+                ListElement { iconName: "applications-graphics"; category: "Graphics" }
+                ListElement { iconName: "applications-internet"; category: "Internet" }
+                ListElement { iconName: "applications-multimedia"; category: "Multimedia" }
+                ListElement { iconName: "applications-office"; category: "Office" }
+                ListElement { iconName: "applications-other"; category: "Other" }
+                ListElement { iconName: "applications-system"; category: "System" }
+                ListElement { iconName: "appications-utilities"; category: "Utilities" }
+            }
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: console.log("Clicked category", index)
-                }
+            ToolButton {
+                icon.name: model.iconName
+                ToolTip.text: model.category
+                onClicked: console.log("Clicked category:", model.category)
+                width: 30
+                height: 30
             }
         }
     }
