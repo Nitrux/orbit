@@ -25,18 +25,18 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
 Rectangle {
-    width: parent.width
     anchors.fill: parent
-    color: "#ffffff" // Visible background
+    color: "#ffffff"
 
     Column {
         id: mainColumn
-        width: parent.width
-        spacing: 20
+        width: parent.width * 0.9
         anchors.horizontalCenter: parent.horizontalCenter
+        spacing: 18
 
+        // Spacer
         Rectangle {
-            height: 24
+            height: 12
             width: parent.width
             color: "transparent"
         }
@@ -44,7 +44,7 @@ Rectangle {
         // Carousel Banner
         SwipeView {
             id: bannerView
-            width: mainColumn.width * 0.9
+            width: mainColumn.width
             height: 200
             currentIndex: 0
             clip: true
@@ -64,7 +64,7 @@ Rectangle {
 
                     Column {
                         anchors.left: parent.left
-                        anchors.leftMargin: 20
+                        anchors.leftMargin: bannerView.width * 0.05
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: 8
 
@@ -105,66 +105,76 @@ Rectangle {
         }
 
         // Application Cards
-        RowLayout {
-            width: parent.width
+        Column {
+            id: cardColumn
+            width: mainColumn.width
+            spacing: 16
             anchors.horizontalCenter: parent.horizontalCenter
 
-            GridLayout {
-                id: cardGrid
-                columns: 3
-                columnSpacing: 16
-                rowSpacing: 16
-                Layout.alignment: Qt.AlignHCenter
+            property int cardsPerRow: Math.floor(width / 240) // ~220 card + spacing
+            property int totalCards: 6
+            property int rowCount: Math.ceil(totalCards / cardsPerRow)
 
-                Repeater {
-                    model: ListModel {
-                        ListElement { name: "Lorem ipsum"; description: "Lorem ipsum dolor sit amet"; icon: "system-file-manager" }
-                        ListElement { name: "Lorem ipsum"; description: "Lorem ipsum dolor sit amet"; icon: "preferences-system" }
-                        ListElement { name: "Lorem ipsum"; description: "Lorem ipsum dolor sit amet"; icon: "utilities-text-editor" }
-                    }
+            Repeater {
+                model: cardColumn.rowCount
 
-                    delegate: Rectangle {
-                        width: 200
-                        height: 180
-                        radius: 8
-                        border.color: "#ddd"
-                        color: "#f5f5f5"
+                Row {
+                    spacing: 16
+                    anchors.horizontalCenter: parent.horizontalCenter
 
-                        Column {
-                            anchors.fill: parent
-                            anchors.margins: 12
-                            spacing: 10
+                    Repeater {
+                        model: {
+                            const cards = [];
+                            const start = index * cardColumn.cardsPerRow;
+                            const end = Math.min(start + cardColumn.cardsPerRow, cardColumn.totalCards);
+                            for (let i = start; i < end; ++i)
+                                cards.push(i);
+                            return cards;
+                        }
 
-                            Rectangle {
-                                width: 64
-                                height: 64
-                                radius: 8
-                                color: "#ffe082"
-                                anchors.horizontalCenter: parent.horizontalCenter
+                        delegate: Rectangle {
+                            width: 220
+                            height: 180
+                            radius: 8
+                            border.color: "#ddd"
+                            color: "#f5f5f5"
 
-                                Image {
-                                    anchors.centerIn: parent
-                                    source: "image://icon/" + icon
-                                    width: 32
-                                    height: 32
+                            Column {
+                                anchors.fill: parent
+                                anchors.margins: 12
+                                spacing: 10
+
+                                Rectangle {
+                                    width: 64
+                                    height: 64
+                                    radius: 8
+                                    color: "#ffe082"
+                                    anchors.horizontalCenter: parent.horizontalCenter
+
+                                    ToolButton {
+                                        anchors.centerIn: parent
+                                        icon.name: "system-file-manager"
+                                        background: null 
+                                        onClicked: {}
+                                    }
                                 }
-                            }
 
-                            Text {
-                                text: name
-                                font.bold: true
-                                font.pixelSize: 14
-                                horizontalAlignment: Text.AlignHCenter
-                                width: parent.width
-                            }
+                                Text {
+                                    text: "Lorem ipsum"
+                                    font.bold: true
+                                    font.pixelSize: 14
+                                    horizontalAlignment: Text.AlignHCenter
+                                    width: parent.width
+                                }
 
-                            Text {
-                                text: description
-                                font.pixelSize: 12
-                                color: "#666"
-                                horizontalAlignment: Text.AlignHCenter
-                                width: parent.width
-                                wrapMode: Text.WordWrap
+                                Text {
+                                    text: "Lorem ipsum dolor sit amet"
+                                    font.pixelSize: 12
+                                    color: "#666"
+                                    horizontalAlignment: Text.AlignHCenter
+                                    width: parent.width
+                                    wrapMode: Text.WordWrap
+                                }
                             }
                         }
                     }
