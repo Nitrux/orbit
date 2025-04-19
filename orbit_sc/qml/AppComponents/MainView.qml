@@ -52,27 +52,41 @@ Rectangle {
             SwipeView {
                 id: bannerView
                 width: mainColumn.width
-                height: 200
+                height: 300
                 currentIndex: 0
                 clip: true
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 Repeater {
                     model: ListModel {
-                        ListElement { title: "Lorem ipsum"; description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." }
-                        ListElement { title: "Dolor sit amet"; description: "Etiam vel lorem eget justo." }
-                        ListElement { title: "Consectetur elit"; description: "Donec in magna id nulla porttitor convallis." }
+                        ListElement {
+                            title: "Lorem ipsum"
+                            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                            bgcolor: "#f5b041"
+                        }
+                        ListElement {
+                            title: "Dolor sit amet"
+                            description: "Etiam vel lorem eget justo."
+                            bgcolor: "#bb8fce"
+                        }
+                        ListElement {
+                            title: "Consectetur elit"
+                            description: "Donec in magna id nulla porttitor convallis."
+                            bgcolor: "#ec7063"
+                        }
                     }
 
                     delegate: Rectangle {
                         width: bannerView.width
                         height: bannerView.height
-                        color: "#222"
+                        color: bgcolor
 
+                        // Carousel text in lower-left
                         Column {
                             anchors.left: parent.left
+                            anchors.bottom: parent.bottom
                             anchors.leftMargin: bannerView.width * 0.05
-                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.bottomMargin: 24
                             spacing: 8
 
                             Text {
@@ -84,13 +98,25 @@ Rectangle {
 
                             Text {
                                 text: description
-                                color: "#ccc"
+                                color: "white"
                                 font.pixelSize: 14
                                 wrapMode: Text.Wrap
                                 width: bannerView.width * 0.6
                             }
                         }
+
+                        // Carousel icon on middle-right
+                        Image {
+                            source: "file:/usr/share/icons/breeze/apps/48/system-file-manager.svg"
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.rightMargin: bannerView.width * 0.05
+                            width: 96
+                            height: 96
+                            fillMode: Image.PreserveAspectFit
+                        }
                     }
+
                 }
             }
 
@@ -119,7 +145,7 @@ Rectangle {
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 property int cardsPerRow: Math.floor(width / 240)
-                property int totalCards: 9
+                property int totalCards: 20
                 property int rowCount: Math.ceil(totalCards / cardsPerRow)
 
                 Repeater {
