@@ -27,7 +27,7 @@ Rectangle {
     width: parent.width
     color: "#eeeeee"
     border.color: "#cccccc"
-    height: layout.implicitHeight + 20
+    height: layout.implicitHeight + 16
 
     property int maxButtonWidth: 46
     property int spacing: 16
