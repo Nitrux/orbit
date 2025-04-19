@@ -28,152 +28,161 @@ Rectangle {
     anchors.fill: parent
     color: "#ffffff"
 
-    Column {
-        id: mainColumn
-        width: parent.width * 0.9
-        anchors.horizontalCenter: parent.horizontalCenter
-        spacing: 18
+    Flickable {
+        id: scrollArea
+        anchors.fill: parent
+        contentWidth: width
+        contentHeight: mainColumn.implicitHeight
+        clip: true
 
-        // Spacer
-        Rectangle {
-            height: 12
-            width: parent.width
-            color: "transparent"
-        }
-
-        // Carousel Banner
-        SwipeView {
-            id: bannerView
-            width: mainColumn.width
-            height: 200
-            currentIndex: 0
-            clip: true
+        Column {
+            id: mainColumn
+            width: scrollArea.width * 0.9
             anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 18
 
-            Repeater {
-                model: ListModel {
-                    ListElement { title: "Lorem ipsum"; description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." }
-                    ListElement { title: "Dolor sit amet"; description: "Etiam vel lorem eget justo." }
-                    ListElement { title: "Consectetur elit"; description: "Donec in magna id nulla porttitor convallis." }
-                }
+            // Spacer
+            Rectangle {
+                height: 12
+                width: parent.width
+                color: "transparent"
+            }
 
-                delegate: Rectangle {
-                    width: bannerView.width
-                    height: bannerView.height
-                    color: "#222"
+            // Carousel Banner
+            SwipeView {
+                id: bannerView
+                width: mainColumn.width
+                height: 200
+                currentIndex: 0
+                clip: true
+                anchors.horizontalCenter: parent.horizontalCenter
 
-                    Column {
-                        anchors.left: parent.left
-                        anchors.leftMargin: bannerView.width * 0.05
-                        anchors.verticalCenter: parent.verticalCenter
-                        spacing: 8
+                Repeater {
+                    model: ListModel {
+                        ListElement { title: "Lorem ipsum"; description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." }
+                        ListElement { title: "Dolor sit amet"; description: "Etiam vel lorem eget justo." }
+                        ListElement { title: "Consectetur elit"; description: "Donec in magna id nulla porttitor convallis." }
+                    }
 
-                        Text {
-                            text: title
-                            color: "white"
-                            font.pixelSize: 20
-                            font.bold: true
-                        }
+                    delegate: Rectangle {
+                        width: bannerView.width
+                        height: bannerView.height
+                        color: "#222"
 
-                        Text {
-                            text: description
-                            color: "#ccc"
-                            font.pixelSize: 14
-                            wrapMode: Text.Wrap
-                            width: bannerView.width * 0.6
+                        Column {
+                            anchors.left: parent.left
+                            anchors.leftMargin: bannerView.width * 0.05
+                            anchors.verticalCenter: parent.verticalCenter
+                            spacing: 8
+
+                            Text {
+                                text: title
+                                color: "white"
+                                font.pixelSize: 20
+                                font.bold: true
+                            }
+
+                            Text {
+                                text: description
+                                color: "#ccc"
+                                font.pixelSize: 14
+                                wrapMode: Text.Wrap
+                                width: bannerView.width * 0.6
+                            }
                         }
                     }
                 }
             }
-        }
 
-        // Pagination Dots
-        Row {
-            spacing: 8
-            anchors.horizontalCenter: parent.horizontalCenter
+            // Pagination Dots
+            Row {
+                spacing: 8
+                anchors.horizontalCenter: parent.horizontalCenter
 
-            Repeater {
-                model: bannerView.count
+                Repeater {
+                    model: bannerView.count
 
-                Rectangle {
-                    width: 8
-                    height: 8
-                    radius: 4
-                    color: index === bannerView.currentIndex ? "black" : "#ccc"
+                    Rectangle {
+                        width: 8
+                        height: 8
+                        radius: 4
+                        color: index === bannerView.currentIndex ? "black" : "#ccc"
+                    }
                 }
             }
-        }
 
-        // Application Cards
-        Column {
-            id: cardColumn
-            width: mainColumn.width
-            spacing: 16
-            anchors.horizontalCenter: parent.horizontalCenter
+            // Application Cards
+            Column {
+                id: cardColumn
+                width: mainColumn.width
+                spacing: 16
+                anchors.horizontalCenter: parent.horizontalCenter
 
-            property int cardsPerRow: Math.floor(width / 240) // ~220 card + spacing
-            property int totalCards: 9
-            property int rowCount: Math.ceil(totalCards / cardsPerRow)
+                property int cardsPerRow: Math.floor(width / 240)
+                property int totalCards: 9
+                property int rowCount: Math.ceil(totalCards / cardsPerRow)
 
-            Repeater {
-                model: cardColumn.rowCount
+                Repeater {
+                    model: cardColumn.rowCount
 
-                Row {
-                    spacing: 16
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    Row {
+                        spacing: 16
+                        anchors.horizontalCenter: parent.horizontalCenter
 
-                    Repeater {
-                        model: {
-                            const cards = [];
-                            const start = index * cardColumn.cardsPerRow;
-                            const end = Math.min(start + cardColumn.cardsPerRow, cardColumn.totalCards);
-                            for (let i = start; i < end; ++i)
-                                cards.push(i);
-                            return cards;
-                        }
+                        Repeater {
+                            model: {
+                                const cards = [];
+                                const start = index * cardColumn.cardsPerRow;
+                                const end = Math.min(start + cardColumn.cardsPerRow, cardColumn.totalCards);
+                                for (let i = start; i < end; ++i)
+                                    cards.push(i);
+                                return cards;
+                            }
 
-                        delegate: Rectangle {
-                            width: 220
-                            height: 180
-                            radius: 8
-                            border.color: "#ddd"
-                            color: "#f5f5f5"
+                            delegate: Rectangle {
+                                width: 220
+                                height: 180
+                                radius: 8
+                                border.color: "#ddd"
+                                color: "#f5f5f5"
 
-                            Column {
-                                anchors.fill: parent
-                                anchors.margins: 12
-                                spacing: 10
+                                Column {
+                                    anchors.fill: parent
+                                    anchors.margins: 12
+                                    spacing: 10
 
-                                Rectangle {
-                                    width: 64
-                                    height: 64
-                                    radius: 8
-                                    color: "#f5f5f5"
-                                    anchors.horizontalCenter: parent.horizontalCenter
-
-                                    Image {
-                                        anchors.centerIn: parent
-                                        source: "file:/usr/share/icons/breeze/apps/48/system-file-manager.svg"
+                                    Rectangle {
                                         width: 64
                                         height: 64
+                                        radius: 8
+                                        color: "#f5f5f5"
+                                        anchors.horizontalCenter: parent.horizontalCenter
+
+                                        Image {
+                                            anchors.centerIn: parent
+                                            source: "file:/usr/share/icons/breeze/apps/48/system-file-manager.svg"
+                                            width: 64
+                                            height: 64
+                                            fillMode: Image.PreserveAspectFit
+                                        }
                                     }
-                                }
 
-                                Text {
-                                    text: "Lorem ipsum"
-                                    font.bold: true
-                                    font.pixelSize: 14
-                                    horizontalAlignment: Text.AlignHCenter
-                                    width: parent.width
-                                }
+                                    Text {
+                                        text: "Lorem ipsum"
+                                        font.bold: true
+                                        font.pixelSize: 14
+                                        horizontalAlignment: Text.AlignHCenter
+                                        width: parent.width
+                                    }
 
-                                Text {
-                                    text: "Lorem ipsum dolor sit amet"
-                                    font.pixelSize: 12
-                                    color: "#666"
-                                    horizontalAlignment: Text.AlignHCenter
-                                    width: parent.width
-                                    wrapMode: Text.WordWrap
+                                    Text {
+                                        text: "Lorem ipsum dolor sit amet"
+                                        font.pixelSize: 12
+                                        color: "#666"
+                                        horizontalAlignment: Text.AlignHCenter
+                                        width: parent.width
+                                        wrapMode: Text.WordWrap
+                                    }
                                 }
                             }
                         }
@@ -181,5 +190,7 @@ Rectangle {
                 }
             }
         }
+
+        ScrollBar.vertical: ScrollBar { }
     }
 }
