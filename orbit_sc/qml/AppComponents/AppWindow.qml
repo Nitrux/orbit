@@ -70,7 +70,7 @@ ApplicationWindow {
         Rectangle {
             id: searchOverlay
             width: parent.width
-            height: searchVisible ? 50 : 0
+            height: searchVisible ? 56 : 0
             y: topNav.height + categoryBar.height
             color: "#ffffff"
             border.color: "#dcdcdc"
@@ -86,17 +86,42 @@ ApplicationWindow {
 
             RowLayout {
                 anchors.fill: parent
-                anchors.margins: 6
+                anchors.margins: 14
+                spacing: 8
 
-                TextField {
-                    id: searchField
+                Rectangle {
+                    id: searchBox
+                    radius: 10
+                    color: "#f5f5f5"
+                    border.color: "#cccccc"
                     Layout.fillWidth: true
-                    placeholderText: "Search"
-                }
+                    height: 30
 
-                ToolButton {
-                    icon.name: "edit-find"
-                    onClicked: AppHub.search_app(searchField.text)
+                    RowLayout {
+                        anchors.fill: parent
+                        anchors.margins: 2
+                        spacing: 6
+
+                        TextField {
+                            id: searchField
+                            placeholderText: "Search applications"
+                            placeholderTextColor: "#888888"
+                            font.pixelSize: 14
+                            color: "#333333"
+                            background: null
+                            verticalAlignment: Text.AlignVCenter
+                            Layout.fillWidth: true
+                            height: parent.height
+                        }
+
+                        ToolButton {
+                            icon.name: "edit-find"
+                            background: null
+                            Layout.alignment: Qt.AlignVCenter
+                            height: parent.height
+                            onClicked: AppHub.search_app(searchField.text)
+                        }
+                    }
                 }
             }
         }
