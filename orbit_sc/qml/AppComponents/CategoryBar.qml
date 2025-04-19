@@ -22,39 +22,65 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
 
 Rectangle {
     width: parent.width
-    height: 41
     color: "#eeeeee"
     border.color: "#cccccc"
+    height: layout.implicitHeight + 20
 
-    Row {
-        anchors.centerIn: parent
-        spacing: 16
+    property int maxButtonWidth: 46
+    property int spacing: 16
+    property var categories: [
+        { iconName: "applications-development", category: "Development" },
+        { iconName: "applications-education-mathematics", category: "Education" },
+        { iconName: "applications-education", category: "Education" },
+        { iconName: "applications-games", category: "Games" },
+        { iconName: "applications-graphics", category: "Graphics" },
+        { iconName: "applications-internet", category: "Internet" },
+        { iconName: "applications-multimedia", category: "Multimedia" },
+        { iconName: "applications-office", category: "Office" },
+        { iconName: "applications-other", category: "Other" },
+        { iconName: "applications-system", category: "System" },
+        { iconName: "applications-utilities", category: "Utilities" }
+    ]
+
+    Column {
+        id: layout
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.topMargin: 8
+
+        property int spacing: 12
+        property int maxButtonWidth: 46
+        property int buttonsPerRow: Math.floor((parent.width * 0.95) / (maxButtonWidth + spacing))
+        property int rowCount: Math.ceil(categories.length / buttonsPerRow)
 
         Repeater {
-            model: ListModel {
-                ListElement { iconName: "applications-development"; category: "Development" }
-                ListElement { iconName: "applications-education-mathematics"; category: "Education" }
-                ListElement { iconName: "applications-education"; category: "Education" }
-                ListElement { iconName: "applications-games"; category: "Games" }
-                ListElement { iconName: "applications-graphics"; category: "Graphics" }
-                ListElement { iconName: "applications-internet"; category: "Internet" }
-                ListElement { iconName: "applications-multimedia"; category: "Multimedia" }
-                ListElement { iconName: "applications-office"; category: "Office" }
-                ListElement { iconName: "applications-other"; category: "Other" }
-                ListElement { iconName: "applications-system"; category: "System" }
-                ListElement { iconName: "appications-utilities"; category: "Utilities" }
-            }
+            model: layout.rowCount
 
-            ToolButton {
-                icon.name: model.iconName
-                ToolTip.text: model.category
-                onClicked: console.log("Clicked category:", model.category)
-                width: 30
-                height: 30
+            Row {
+                spacing: layout.spacing
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                Repeater {
+                    model: {
+                        const start = index * layout.buttonsPerRow;
+                        const end = Math.min(start + layout.buttonsPerRow, categories.length);
+                        const sub = [];
+                        for (let i = start; i < end; ++i)
+                            sub.push(categories[i]);
+                        return sub;
+                    }
+
+                    delegate: ToolButton {
+                        icon.name: modelData.iconName
+                        ToolTip.text: modelData.category
+                        width: 30
+                        height: 30
+                        onClicked: console.log("Clicked category:", modelData.category)
+                    }
+                }
             }
         }
     }

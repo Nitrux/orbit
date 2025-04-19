@@ -80,6 +80,9 @@ Rectangle {
                         width: bannerView.width
                         height: bannerView.height
                         color: bgcolor
+                        radius: 2
+                        border.width: 1
+                        border.color: Qt.darker(bgcolor, 1.3)
 
                         // Carousel text in lower-left
                         Column {
@@ -168,7 +171,7 @@ Rectangle {
                             delegate: Rectangle {
                                 width: 220
                                 height: 180
-                                radius: 8
+                                radius: 2
                                 border.color: "#ddd"
                                 color: "#f5f5f5"
 
